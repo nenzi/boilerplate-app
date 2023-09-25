@@ -9,8 +9,8 @@ export class UsersService {
     return this.repo.create(data);
   }
 
-  update(id: number, data: Prisma.UserUpdateInput) {
-    return this.repo.update({ id, data });
+  update(where: Prisma.UserWhereUniqueInput, data: Prisma.UserUpdateInput) {
+    return this.repo.update({ where, data });
   }
 
   remove(id: number) {

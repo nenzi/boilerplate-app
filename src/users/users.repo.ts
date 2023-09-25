@@ -32,7 +32,11 @@ export class UserRepo {
   async login(data: loginData): Promise<User> | null {
     const { email, password } = data;
 
+    console.log(email, password);
+
     const user = await this.prisma.user.findFirst({ where: { email } });
+
+    console.log(user);
 
     if (
       user &&
@@ -44,13 +48,20 @@ export class UserRepo {
   }
 
   async update(params: {
-    id: number;
+    where: Prisma.UserWhereUniqueInput;
     data: Prisma.UserUpdateInput;
   }): Promise<User> {
-    const { id, data } = params;
+    const { where, data } = params;
+
+    if (data.password) {
+      data.password = await this.passwordService.hashPassword(
+        data.password.toString(),
+      );
+    }
+
     return this.prisma.user.update({
       data,
-      where: { id },
+      where,
     });
   }
 

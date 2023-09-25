@@ -16,5 +16,12 @@ export const UpdateUserSchema = z.object({
   password: z.string().optional(),
 });
 
+export const updateWhereSchema = z.object({
+  id: z.number().optional(),
+  email: z.string().email(),
+});
+
+export type updateWhereData = z.infer<typeof updateWhereSchema>;
+
 export type CreateUserData = z.infer<typeof CreateUserSchema>;
 export type UpdateUserData = z.infer<typeof UpdateUserSchema>;
