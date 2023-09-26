@@ -13,11 +13,11 @@ export class Res {
   data: any;
   constructor() {}
 
-  success(data: any) {
+  success(data?: any) {
     this.code = HttpStatus.OK;
     this.message = 'success';
     this.status = true;
-    this.data = data;
+    this.data = data || null;
     return this;
   }
 

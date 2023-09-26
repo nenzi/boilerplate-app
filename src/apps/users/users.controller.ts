@@ -6,16 +6,11 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Prisma } from '@prisma/client';
 import { ZodValidationPipe } from 'src/validation/zodPipe';
-import {
-  CreateUserSchema,
-  UpdateUserSchema,
-  updateWhereSchema,
-} from 'src/schema/userSchema';
+import { CreateUserSchema, UpdateUserSchema } from 'src/schema/userSchema';
 
 @Controller('users')
 export class UsersController {
@@ -31,12 +26,10 @@ export class UsersController {
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Query(new ZodValidationPipe(updateWhereSchema))
-    where: Prisma.UserWhereUniqueInput,
     @Body(new ZodValidationPipe(UpdateUserSchema))
     data: Prisma.UserUpdateInput,
   ) {
-    return this.usersService.update(where, data);
+    return this.usersService.update(id, data);
   }
 
   @Delete(':id')

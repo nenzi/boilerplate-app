@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { loginData } from 'src/schema/authSchema';
-import { UserRepo } from 'src/users/users.repo';
+import { UserRepo } from 'src/apps/users/users.repo';
 import { Res } from 'src/utility/response';
 import { JwtService } from 'src/utility/services/jwt.service';
 import { IRes } from 'src/utility/response';
@@ -26,12 +26,10 @@ export class AuthService implements AuthServiceImpl {
   }
 
   async forgotPassword(email: string, password: string): Promise<IRes> {
-    const user = await this.repo.update({
-      where: { email },
-      data: { password },
-    });
+    if (await this.repo.forgotPassword(email, password))
+      return this.res.success().response();
 
-    return this.res.success(user).response();
+    return this.res.fail(400).response();
   }
 
   verifyToken(token: string) {
